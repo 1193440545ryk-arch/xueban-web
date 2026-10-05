@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const release = JSON.parse(readFileSync(path.join(here, 'public/releases.json'), 'utf8'));
-const installer = path.join(here, '..', 'dist', release.filename);
+const installer = path.join(here, '..', 'dist', release.localFilename || release.filename);
 
 function desktopPreview(server) {
   server.middlewares.use((req, res, next) => {

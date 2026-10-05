@@ -31,9 +31,9 @@ pnpm dev
 当前元数据为桌面版 1.19.0，对应既有安装包，不把 370 MB 二进制写入网页仓库。
 
 1. 在同一个 GitHub 仓库创建正式 Release，tag 为 `v1.19.0`。
-2. 将现有 `dist/学伴工作台-1.19.0-Windows-x64-Setup.exe` 上传为 Release 附件，文件名不要改变。发布前核对版本、文件大小及 SHA256。
-3. 发布 Release 后工作流会再次部署。只有资产文件名、大小与 GitHub 提供的 SHA256 摘要均匹配 `public/releases.json`，才自动生成下载链接。
-4. 新版本先更新 `public/releases.json` 的全部元数据，再发布同版本 Release。也可直接把已验证的 HTTPS 正式下载地址填入 `url`。
+2. 将现有 `dist/学伴工作台-1.19.0-Windows-x64-Setup.exe` 的副本命名为 `xueban-1.19.0-Windows-x64-Setup.exe`，上传为 Release 附件。GitHub 会处理附件文件名中的中文，故下载附件统一使用英文名，文件内容保持一致。发布前核对版本、文件大小及 SHA256。
+3. 发布 Release 后工作流会再次部署。首次配置时，到 Settings → Environments → github-pages → Deployment branches and tags，保留 `main` 分支规则，并添加 `v*` 标签规则，以允许版本发布触发部署。只有资产文件名、大小与 GitHub 提供的 SHA256 摘要均匹配 `public/releases.json`，才自动生成下载链接。
+4. 新版本先更新 `public/releases.json` 的全部元数据，再发布同版本 Release：`filename` 为 GitHub 英文附件名，`localFilename` 为本机现有安装包名。也可直接把已验证的 HTTPS 正式下载地址填入 `url`。
 
 `url` 为空时，生产页面会明确显示下载地址尚未配置。开发服务器只在本机 127.0.0.1 提供已存在安装包的预览下载；该路径不会进入生产构建。
 
