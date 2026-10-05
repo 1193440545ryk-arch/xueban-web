@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d30">
+  <meta name="description" content="学伴本地工具台，在浏览器中处理图片、PDF、文档和公式。">
+  <title>学伴 · 本地工具台</title>
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="icon-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.4"/><path d="m3 17 5-5 4 4 4-6 5 7"/></symbol>
+    <symbol id="icon-pdf" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="icon-document" viewBox="0 0 24 24"><path d="M4 5h10v14H4zM17 9h4m-2-2 2 2-2 2M7 9h4M7 13h4M17 15h4m-2-2-2 2 2 2"/></symbol>
+    <symbol id="icon-paper" viewBox="0 0 24 24"><path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7M7 7h7M7 11h4m3 10 1-5 5-5 3 3-5 5z"/></symbol>
+    <symbol id="icon-formula" viewBox="0 0 24 24"><path d="m3 13 4 5L11 5h10M14 11l6 7m0-7-6 7"/></symbol>
+    <symbol id="icon-tasks" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="icon-desktop" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#image"><span class="brand-mark">学</span><span>学伴<small>本地工具台</small></span></a>
+      <span class="nav-label">常用工具</span>
+      <nav aria-label="工具导航">
+        <button class="nav-item active" data-tab="image" aria-current="page"><svg class="icon"><use href="#icon-image"/></svg>图片工具</button>
+        <button class="nav-item" data-tab="pdf"><svg class="icon"><use href="#icon-pdf"/></svg>PDF 工具</button>
+        <button class="nav-item" data-tab="document"><svg class="icon"><use href="#icon-document"/></svg>格式转换</button>
+        <button class="nav-item" data-tab="paper"><svg class="icon"><use href="#icon-paper"/></svg>论文基础</button>
+        <button class="nav-item" data-tab="formula"><svg class="icon"><use href="#icon-formula"/></svg>公式编辑</button>
+        <span class="nav-divider"></span>
+        <button class="nav-item" data-tab="tasks"><svg class="icon"><use href="#icon-tasks"/></svg>任务记录<span id="task-badge" class="badge" hidden></span></button>
+        <button class="nav-item" data-tab="download"><svg class="icon"><use href="#icon-desktop"/></svg>客户端下载</button>
+      </nav>
+      <div class="sidebar-note"><svg class="icon"><use href="#icon-shield"/></svg><strong>文件在本机处理</strong><p>无需登录<br>文件内容不发送到服务器</p></div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar"><span class="local-status"><span></span>浏览器本地处理</span><button class="secondary download-entry" id="download-entry"><svg class="icon"><use href="#icon-download"/></svg>下载 Windows 客户端</button></header>
+      <main>
+        <div class="session-note"><svg class="icon"><use href="#icon-tasks"/></svg><p>任务仅保留在当前页面。<strong>刷新或关闭前，请下载需要的结果。</strong></p></div>
+
+        <section class="panel" id="panel-image" aria-labelledby="image-title">
+          <div class="page-heading"><div><span class="eyebrow">图片工具</span><h1 id="image-title">图片处理</h1><p>调整尺寸、转换格式，给图片减减负。</p></div><span class="heading-icon"><svg class="icon"><use href="#icon-image"/></svg></span></div>
+          <form id="image-form" class="tool-form two-column">
+            <section class="surface upload-surface"><div class="section-heading"><h2><span class="step">1</span>添加图片</h2><span class="muted">可多选</span></div><label class="dropzone" id="image-dropzone"><input id="image-files" type="file" class="file-input" accept="image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp" multiple><span class="upload-icon"><svg class="icon"><use href="#icon-upload"/></svg></span><strong>拖入图片，或点击选择</strong><span>JPG、PNG、WebP、BMP</span></label><p class="file-hint">每张 ≤ 20 MB · 最多 20 张 · 合计 ≤ 50 MB</p><ul id="image-selection" class="file-list"></ul></section>
+            <section class="surface"><div class="section-heading"><h2><span class="step">2</span>设置输出</h2></div><label for="image-format">输出格式</label><select id="image-format"><option value="jpg">JPG · 适合照片</option><option value="png">PNG · 保留透明背景</option><option value="webp">WebP · 兼顾体积与画质</option><option value="pdf">PDF · 合为一份文档</option></select><p id="image-format-hint" class="field-hint">透明区域转为白色，适合分享和保存照片。</p><div class="range-label"><label for="image-quality">画质</label><output id="quality-value">85%</output></div><input id="image-quality" type="range" min="10" max="100" value="85"><div class="range-ends"><span>体积更小</span><span>画质更高</span></div><div class="field-grid"><div><label for="image-width">最大宽度 <span>选填</span></label><div class="unit-input"><input id="image-width" type="number" min="1" max="6000" placeholder="原始宽度"><span>px</span></div></div><div><label for="image-height">最大高度 <span>选填</span></label><div class="unit-input"><input id="image-height" type="number" min="1" max="6000" placeholder="原始高度"><span>px</span></div></div><div><label for="image-target">目标大小 <span>选填</span></label><div class="unit-input"><input id="image-target" type="number" min="1" max="20480" placeholder="不限制"><span>KB</span></div></div></div><p class="field-hint">宽高保持比例；目标大小为尽量达到，可能降低画质或缩小尺寸。单张解码上限 2500 万像素。</p></section>
+            <div class="submit-row"><p><svg class="icon"><use href="#icon-shield"/></svg>在当前浏览器处理，原件不会被覆盖</p><button type="submit" class="primary">开始处理 <svg class="icon"><use href="#icon-arrow"/></svg></button></div><p id="image-error" class="error-message" role="alert" hidden></p>
+          </form>
+        </section>
+
+        <section class="panel" id="panel-pdf" aria-labelledby="pdf-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">PDF 工具</span><h1 id="pdf-title">整理 PDF</h1><p>合并资料，或只留下需要的页面。</p></div><span class="heading-icon"><svg class="icon"><use href="#icon-pdf"/></svg></span></div>
+          <form id="pdf-form" class="tool-form"><div class="segmented" role="group" aria-label="PDF 处理方式"><button type="button" data-pdf-mode="merge" class="active" aria-pressed="true">合并</button><button type="button" data-pdf-mode="split" aria-pressed="false">拆分</button><button type="button" data-pdf-mode="extract" aria-pressed="false">提取页面</button><button type="button" data-pdf-mode="rotate" aria-pressed="false">旋转</button></div><section class="surface"><div class="section-heading"><h2><span class="step">1</span>添加 PDF</h2><span id="pdf-file-count" class="muted">至少 2 份</span></div><label class="dropzone" id="pdf-dropzone"><input id="pdf-files" type="file" class="file-input" accept=".pdf,application/pdf" multiple><span class="upload-icon"><svg class="icon"><use href="#icon-pdf"/></svg></span><strong id="pdf-picker-title">拖入要合并的 PDF，或点击选择</strong><span id="pdf-picker-hint">添加后可调整合并顺序</span></label><p class="file-hint">总量 ≤ 50 MB · 最多 20 份</p><ul id="pdf-selection" class="file-list"></ul></section><section id="pdf-options" class="surface" hidden><div class="section-heading"><h2><span class="step">2</span>页面设置</h2></div><div id="pdf-groups-field" hidden><label for="pdf-groups">拆分分组 <span>选填</span></label><input id="pdf-groups" placeholder="例如 1-3;4-6"><p class="field-hint">留空时每页单独保存。分号分隔不同文档，页码从 1 开始。</p></div><div id="pdf-pages-field" class="field-grid compact-grid" hidden><div><label for="pdf-pages">页面范围</label><input id="pdf-pages" placeholder="例如 1-3,5"><p id="pdf-pages-hint" class="field-hint"></p></div><div id="pdf-angle-field" hidden><label for="pdf-angle">顺时针旋转</label><select id="pdf-angle"><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></div></div></section><div class="submit-row"><p>加密或损坏的 PDF 可能无法处理</p><button id="pdf-submit" type="submit" class="primary">开始合并 <svg class="icon"><use href="#icon-arrow"/></svg></button></div><p id="pdf-error" class="error-message" role="alert" hidden></p></form>
+        </section>
+
+        <section class="panel" id="panel-document" aria-labelledby="document-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">格式转换</span><h1 id="document-title">转换常用文档</h1><p>提取 PDF 内容，将文本整理成文档。</p></div><span class="heading-icon"><svg class="icon"><use href="#icon-document"/></svg></span></div>
+          <form id="document-form" class="tool-form two-column"><section class="surface"><div class="section-heading"><h2><span class="step">1</span>选择转换方式</h2></div><label for="document-mode">源文件 → 目标格式</label><select id="document-mode"><optgroup label="PDF"><option value="pdf_txt">PDF → 纯文本 TXT</option><option value="pdf_png">PDF → PNG 图片</option><option value="pdf_jpg">PDF → JPG 图片</option></optgroup><optgroup label="文本与 Markdown"><option value="txt_docx">TXT → Word DOCX</option><option value="md_docx">Markdown → Word DOCX</option><option value="txt_html">TXT → 打印为 PDF</option><option value="md_html">Markdown → 打印为 PDF</option></optgroup></select><p id="document-mode-hint" class="field-hint"></p><div id="document-pages-field" class="form-subsection"><label for="document-pages">页面范围 <span>选填</span></label><input id="document-pages" placeholder="全部页面，或填写 1-3,5"></div><div id="document-image-options" class="field-grid" hidden><div><label for="document-dpi">图片清晰度</label><div class="unit-input"><input id="document-dpi" type="number" min="72" max="200" value="150"><span>DPI</span></div></div><div id="document-quality-field"><label for="document-quality">JPG 画质</label><input id="document-quality" type="number" min="10" max="100" value="85"></div></div><p id="document-page-limit" class="field-hint" hidden>图片导出一次最多 20 页，DPI 越高越占用内存。</p></section><section class="surface upload-surface"><div class="section-heading"><h2><span class="step">2</span>添加源文件</h2><span class="muted">单个文件</span></div><label class="dropzone" id="document-dropzone"><input id="document-files" type="file" class="file-input" accept=".pdf"><span class="upload-icon"><svg class="icon"><use href="#icon-upload"/></svg></span><strong id="document-picker-title">选择或拖入 PDF</strong><span>一次处理一份源文件</span></label><p id="document-limit" class="file-hint">PDF ≤ 50 MB</p><ul id="document-selection" class="file-list"></ul></section><div class="submit-row"><p id="document-submit-hint">原文件不变，处理后下载结果</p><button type="submit" class="primary">开始转换 <svg class="icon"><use href="#icon-arrow"/></svg></button></div><p id="document-error" class="error-message" role="alert" hidden></p></form>
+        </section>
+
+        <section class="panel" id="panel-paper" aria-labelledby="paper-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">论文基础</span><h1 id="paper-title">整理基础格式</h1><p>先检查修改范围，确认后生成 DOCX 副本。</p></div><span class="heading-icon"><svg class="icon"><use href="#icon-paper"/></svg></span></div>
+          <form id="paper-form" class="tool-form"><div class="segmented" role="group" aria-label="论文处理方式"><button type="button" data-paper-mode="format" class="active" aria-pressed="true">基础排版</button><button type="button" data-paper-mode="cleanup" aria-pressed="false">保守文本清理</button></div><div class="two-column paper-columns"><section class="surface upload-surface"><div class="section-heading"><h2><span class="step">1</span>添加 Word 文档</h2></div><label class="dropzone" id="paper-dropzone"><input id="paper-files" type="file" class="file-input" accept=".docx"><span class="upload-icon"><svg class="icon"><use href="#icon-paper"/></svg></span><strong>选择或拖入 DOCX</strong><span>保留原件，生成独立副本</span></label><p class="file-hint">一份 DOCX · 最大 20 MB</p><ul id="paper-selection" class="file-list"></ul></section><section class="surface"><div class="section-heading"><h2><span class="step">2</span>设置处理范围</h2></div><div id="paper-format-options"><label for="paper-font">正文字体</label><input id="paper-font" value="宋体" maxlength="80" required><div class="field-grid"><div><label for="paper-font-size">正文字号</label><div class="unit-input"><input id="paper-font-size" type="number" min="6" max="36" step="0.5" value="12" required><span>pt</span></div></div><div><label for="paper-line-spacing">行距</label><select id="paper-line-spacing"><option value="1">单倍</option><option value="1.5" selected>1.5 倍</option><option value="2">2 倍</option></select></div><div><label for="paper-indent">首行缩进</label><div class="unit-input"><input id="paper-indent" type="number" min="0" max="4" step="0.5" value="2" required><span>字符</span></div></div></div><p class="field-hint">仅调整安全的普通正文，已有标题与复杂内容保留原状；不自动套用院校模板。</p></div><div id="paper-cleanup-options" hidden><h3>先检查，再确认</h3><p class="field-hint">只清理安全正文段尾的半角、全角空格。段首空格、制表符和空段保留，已有标题与复杂结构保持原状。</p><p class="field-hint">不会覆盖原件；请在生成后核对目录、引用、公式和分页。</p></div></section></div><div class="submit-row"><p>这里只预览，确认后才生成副本</p><button type="submit" class="primary">检查并预览 <svg class="icon"><use href="#icon-arrow"/></svg></button></div><p id="paper-error" class="error-message" role="alert" hidden></p></form>
+        </section>
+
+        <section class="panel" id="panel-formula" aria-labelledby="formula-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">公式编辑</span><h1 id="formula-title">写下你的公式</h1><p>输入 LaTeX，实时预览并复制或保存。</p></div><span class="heading-icon"><svg class="icon"><use href="#icon-formula"/></svg></span></div>
+          <div class="two-column formula-columns"><section class="surface"><div class="section-heading"><h2>LaTeX 源码</h2><button id="formula-example" class="text-button">载入示例</button></div><label class="sr-only" for="formula-input">LaTeX 公式源码</label><textarea id="formula-input" spellcheck="false" maxlength="12000" placeholder="例如：x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}"></textarea><div class="formula-actions"><button id="formula-copy" class="secondary">复制 LaTeX</button><button id="formula-save" class="primary">保存 .tex</button></div><p id="formula-error" class="error-message" role="alert" hidden></p></section><section class="surface"><div class="section-heading"><h2>公式预览</h2><span class="muted">实时更新</span></div><div id="formula-preview" class="formula-preview"><p>在左侧输入公式，预览会显示在这里。</p></div><p class="field-hint">预览用于核对排版，计算与数学内容请自行检查。</p></section></div><div class="information-note"><svg class="icon"><use href="#icon-desktop"/></svg><div><strong>需要从图片识别公式？</strong><p>当前浏览器版提供 LaTeX 编辑。图片识别请使用 Windows 客户端。</p></div><button id="formula-desktop" class="secondary">查看客户端</button></div>
+        </section>
+
+        <section class="panel" id="panel-tasks" aria-labelledby="tasks-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">当前页面</span><h1 id="tasks-title">任务记录</h1><p>查看进度，下载这次处理的结果。</p></div><button id="clear-tasks" class="secondary">清空记录</button></div><div class="tasks-toolbar"><span id="task-count">暂无任务</span><span>记录不在刷新后保留</span></div><div id="tasks-list" class="tasks-list"></div><div id="tasks-empty" class="empty-state"><span><svg class="icon"><use href="#icon-tasks"/></svg></span><h2>从一个小任务开始</h2><p>图片、PDF 和文档处理完成后，<br>结果会出现在这里。</p><button id="first-task" class="secondary">去处理图片 <svg class="icon"><use href="#icon-arrow"/></svg></button></div>
+        </section>
+
+        <section class="panel" id="panel-download" aria-labelledby="download-title" hidden>
+          <div class="page-heading"><div><span class="eyebrow">客户端下载</span><h1 id="download-title">把学伴装进电脑</h1><p>需要更完整的工具时，使用 Windows 客户端。</p></div><button id="release-retry" class="secondary">刷新信息</button></div><section class="surface release-card"><p id="release-loading" role="status">正在读取发布信息…</p><div id="release-error" class="error-message" role="alert" hidden></div><div id="release-content" hidden><div class="release-product"><span class="release-icon"><svg class="icon"><use href="#icon-desktop"/></svg></span><div><span class="eyebrow">WINDOWS DESKTOP</span><h2>学伴工作台</h2><p><span id="release-version"></span> · <span id="release-platform"></span></p></div></div><div class="release-download-row"><div><h3 id="release-filename"></h3><p id="release-size" class="field-hint"></p></div><a id="release-link" class="primary" download><svg class="icon"><use href="#icon-download"/></svg>下载安装包</a></div><p id="release-unconfigured" class="release-unconfigured" hidden>发布地址待配置</p><p id="release-notes" class="field-hint"></p><details id="release-checksum-details"><summary>查看 SHA-256 校验值</summary><code id="release-sha256"></code></details></div></section><div class="two-column mode-comparison"><article class="surface"><span class="eyebrow">当前页面</span><h2>浏览器本地版</h2><p>不需要安装，文件在浏览器中处理。任务只存在当前页面，请及时下载结果。</p></article><article class="surface"><span class="eyebrow">安装到电脑</span><h2>Windows 客户端</h2><p>提供更多转换和学习工具，文件转换在本机处理；文献检索等功能需要联网。</p></article></div>
+        </section>
+        <footer><span>学伴 · 本地工具台</span><span>把时间留给学习。</span></footer>
+      </main>
+    </div>
+  </div>
+  <dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">删除这条记录？</h2><p id="confirm-description"></p><div class="dialog-actions"><button class="secondary" value="cancel">保留</button><button class="danger" value="confirm">确认</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="noscript">学伴需要启用 JavaScript 才能在浏览器中处理文件。</p></noscript>
+</body>
+</html>
+
+

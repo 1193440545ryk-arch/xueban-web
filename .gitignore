@@ -1,0 +1,11 @@
+node_modules/
+dist-web/
+test-results/
+playwright-report/
+.env*
+*.exe
+*.onnx
+.local-qa/
+public/pdfjs/
+public/licenses/dependencies.json
+
