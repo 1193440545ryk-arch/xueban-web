@@ -1,10 +1,10 @@
 {
   "version": "1.19.0",
   "platform": "Windows x64",
-  "filename": "xueban-1.19.0-Windows-x64-Setup.exe",
+  "filename": "xueban-1.19.0-r2-Windows-x64-Setup.exe",
   "localFilename": "学伴工作台-1.19.0-Windows-x64-Setup.exe",
-  "bytes": 370186944,
-  "sha256": "baabf40ba04c5377808e61359902e18bfb421c4415e4f579a85f8a15482d951a",
+  "bytes": 370310473,
+  "sha256": "47db238ef247e96067ee38c2fb2f360642f3d8e9db828b250c827f876e042873",
   "url": "",
-  "notes": "Windows 桌面完整版。正式下载地址将在 GitHub Release 发布后配置。"
+  "notes": "1.19.0 修订版（2026-10-05）：安装包不含开发测试数据、历史记录或个人设置，新用户首次打开为空白状态。已优化安装文件写入，并修复文件被占用时的卸载处理。已有用户重装会保留本机自己的数据。"
 }

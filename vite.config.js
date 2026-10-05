@@ -13,7 +13,7 @@ function desktopPreview(server) {
     if (pathname === '/releases.json' && existsSync(installer)) {
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.setHeader('Cache-Control', 'no-store');
-      res.end(JSON.stringify({...release, url: './__desktop_download__/' + encodeURIComponent(release.filename), notes: '本机预览提供当前正式安装包；GitHub 发布后将使用 Release 下载地址。'})); return;
+      res.end(JSON.stringify({...release, url: './__desktop_download__/' + encodeURIComponent(release.filename)})); return;
     }
     if (pathname === '/__desktop_download__/' + encodeURIComponent(release.filename) && existsSync(installer)) {
       res.setHeader('Content-Type', 'application/octet-stream');

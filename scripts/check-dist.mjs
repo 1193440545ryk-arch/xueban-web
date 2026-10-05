@@ -26,7 +26,6 @@ if (repo && /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repo)) {
   // Only create a link after a matching published release has been checked by the workflow.
   if (process.env.DESKTOP_RELEASE_AVAILABLE === 'true') {
     release.url = `https://github.com/${repo}/releases/download/v${release.version}/${encodeURIComponent(release.filename)}`;
-    release.notes = 'Windows 桌面完整版。下载后可使用页面中的 SHA256 核对文件。';
     await writeFile(manifestPath, JSON.stringify(release, null, 2));
   }
 }
